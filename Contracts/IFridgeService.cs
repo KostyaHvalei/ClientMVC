@@ -10,5 +10,6 @@ namespace Contracts
 	public interface IFridgeService
 	{
 		public Task<IEnumerable<FridgeDTO>> GetAll();
+		Task<FridgeProductsDTO> GetFridge(Guid id);
 	}
 }

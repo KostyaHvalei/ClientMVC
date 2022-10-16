@@ -4,13 +4,14 @@
 }
 
 <table class="table">
-    <tr><td>Name</td></><td>Owner Name</td><td>Model Name</td></tr>
+    <tr><td>Name</td></><td>Owner Name</td><td>Model Name</td><td></td></tr>
     @foreach (var fridge in Model)
     {
         <tr>
             <td>@fridge.Name</td>
             <td>@fridge.OwnerName</td>
             <td>@fridge.ModelName</td>
+            <td><a asp-action="Details" asp-controller="Fridges" asp-route-id=@fridge.Id.ToString()>Details</a></td>
         </tr>
     }
 </table>

@@ -1,6 +1,7 @@
 ﻿using ClientMVC.Extensions;
 using Contracts;
 using Entities.DataTransferObjects;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -22,6 +23,12 @@ namespace ClientMVC.Services
 			var response = await _client.GetAsync(BasePath);
 
 			return await response.ReadContentAsync<List<FridgeDTO>>();
+		}
+
+		public async Task<FridgeProductsDTO> GetFridge(Guid id)
+		{
+			var response = await _client.GetAsync(BasePath + "/" + id.ToString());
+			return await response.ReadContentAsync<FridgeProductsDTO>();
 		}
 	}
 }

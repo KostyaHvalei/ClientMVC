@@ -1,5 +1,52 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model FridgeProductsDTO
 @{
+    ViewData["Title"] = @Model.FridgeName;
 }
+
+<h3>Details</h3>
+
+<div>
+    <h4>Fridge information</h4>
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FridgeName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FridgeName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.OwnerName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.OwnerName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ModelName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ModelName)
+        </dd>
+    </dl>
+
+    @if(Model.Products.Count() > 0){
+        <h4>Products in this fridge</h4>
+        <table class="table">
+            <tr><td>Name</td><td>Quantity</td></tr>
+            @foreach (var prod in Model.Products)
+            {
+                if(prod.Quantity > 0)
+                {
+                    <tr>
+                        <td>@prod.ProductName</td>
+                        <td>@prod.Quantity</td>
+                    </tr>
+                }
+                
+            }
+        </table>
+    }
+    else
+    {
+        <h4>There is no products in this fridge</h4>
+    }
+</div>

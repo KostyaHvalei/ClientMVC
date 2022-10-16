@@ -2,6 +2,7 @@
 using Contracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 
 namespace ClientMVC.Controllers
@@ -23,9 +24,12 @@ namespace ClientMVC.Controllers
 		}
 
 		// GET: FridgesController/Details/5
-		public ActionResult Details(int id)
+		public async Task<ActionResult> Details(Guid id)
 		{
-			return View();
+			var fridge_with_prods = await _service.GetFridge(id);
+			if (fridge_with_prods == null)
+				return Redirect("Index");
+			return View(fridge_with_prods);
 		}
 
 		// GET: FridgesController/Create
