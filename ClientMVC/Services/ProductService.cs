@@ -1,8 +1,10 @@
 ﻿using ClientMVC.Extensions;
 using Contracts;
 using Entities.DataTransferObjects;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
 
 namespace ClientMVC.Services
@@ -22,6 +24,27 @@ namespace ClientMVC.Services
 			var response = await _client.GetAsync(BasePath);
 
 			return await response.ReadContentAsync<List<ProductDTO>>();
+		}
+
+		public async Task<bool> CreateProduct(ProductToCreationDTO product)
+		{
+			var response = await _client.PostAsJsonAsync(BasePath, product);
+			if (!response.IsSuccessStatusCode)
+				return false;
+			return true;
+		}
+
+		public async Task<bool> EditProduct(Guid id, ProductToUpdateDTO fridgeModel)
+		{
+			var response = await _client.PutAsJsonAsync(BasePath + "/" + id.ToString(), fridgeModel);
+			if (!response.IsSuccessStatusCode)
+				return false;
+			return true;
+		}
+		public async Task<ProductDTO> GetProduct(Guid id)
+		{
+			var response = await _client.GetAsync(BasePath + "/" + id.ToString());
+			return await response.ReadContentAsync<ProductDTO>();
 		}
 	}
 }

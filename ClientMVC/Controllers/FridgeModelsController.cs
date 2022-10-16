@@ -56,6 +56,8 @@ namespace ClientMVC.Controllers
 		public async Task<ActionResult> Edit(Guid id)
 		{
 			var fridgeModel = await _service.GetFridge(id);
+			if (fridgeModel == null)
+				return RedirectToAction("Index");
 			return View(fridgeModel);
 		}
 

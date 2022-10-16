@@ -10,5 +10,8 @@ namespace Contracts
 	public interface IProductService
 	{
 		public Task<IEnumerable<ProductDTO>> GetAll();
+		Task<bool> CreateProduct(ProductToCreationDTO fridgeModel);
+		Task<bool> EditProduct(Guid id, ProductToUpdateDTO fridgeModel);
+		Task<ProductDTO> GetProduct(Guid id);
 	}
 }
