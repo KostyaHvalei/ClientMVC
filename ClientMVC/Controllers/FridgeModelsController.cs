@@ -1,7 +1,9 @@
 ﻿using ClientMVC.Services;
 using Contracts;
+using Entities.DataTransferObjects;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 
 namespace ClientMVC.Controllers
@@ -22,11 +24,11 @@ namespace ClientMVC.Controllers
 			return View(content);
 		}
 
-		// GET: FridgeModelsController/Details/5
-		public ActionResult Details(int id)
-		{
-			return View();
-		}
+		//// GET: FridgeModelsController/Details/5
+		//public ActionResult Details(int id)
+		//{
+		//	return View();
+		//}
 
 		// GET: FridgeModelsController/Create
 		public ActionResult Create()
@@ -37,58 +39,61 @@ namespace ClientMVC.Controllers
 		// POST: FridgeModelsController/Create
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public ActionResult Create(IFormCollection collection)
+		public async Task<ActionResult> Create([FromForm] FridgeModelToCreationDTO fridgeModel)
 		{
-			try
+			if (ModelState.IsValid)
 			{
-				return RedirectToAction(nameof(Index));
+				bool success = await _service.CreateFridgeModel(fridgeModel);
+				if (success)
+					return RedirectToAction("Index");
+				else
+					ModelState.AddModelError("Model", "Error in model");
 			}
-			catch
-			{
-				return View();
-			}
+			return View(fridgeModel);
 		}
 
 		// GET: FridgeModelsController/Edit/5
-		public ActionResult Edit(int id)
+		public async Task<ActionResult> Edit(Guid id)
 		{
-			return View();
+			var fridgeModel = await _service.GetFridge(id);
+			return View(fridgeModel);
 		}
 
 		// POST: FridgeModelsController/Edit/5
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public ActionResult Edit(int id, IFormCollection collection)
+		public async Task<ActionResult> Edit(Guid id, [FromForm] FridgeModelToUpdateDTO fridgeModel)
 		{
-			try
+			if (ModelState.IsValid)
 			{
-				return RedirectToAction(nameof(Index));
+				bool success = await _service.EditFridgeModel(id, fridgeModel);
+				if (success)
+					return RedirectToAction("Index");
+				else
+					ModelState.AddModelError("Model", "Error in model");
 			}
-			catch
-			{
-				return View();
-			}
+			return View(fridgeModel);
 		}
 
-		// GET: FridgeModelsController/Delete/5
-		public ActionResult Delete(int id)
-		{
-			return View();
-		}
+		//// GET: FridgeModelsController/Delete/5
+		//public ActionResult Delete(int id)
+		//{
+		//	return View();
+		//}
 
-		// POST: FridgeModelsController/Delete/5
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public ActionResult Delete(int id, IFormCollection collection)
-		{
-			try
-			{
-				return RedirectToAction(nameof(Index));
-			}
-			catch
-			{
-				return View();
-			}
-		}
+		//// POST: FridgeModelsController/Delete/5
+		//[HttpPost]
+		//[ValidateAntiForgeryToken]
+		//public ActionResult Delete(int id, IFormCollection collection)
+		//{
+		//	try
+		//	{
+		//		return RedirectToAction(nameof(Index));
+		//	}
+		//	catch
+		//	{
+		//		return View();
+		//	}
+		//}
 	}
 }

@@ -3,14 +3,16 @@
     ViewData["Title"] = "Fridge Models";
 }
 
+<a asp-action="Create" asp-controller="FridgeModels">Create new Fridge Model</a>
 
 <table class="table">
-    <tr><td>Name</td></><td>Year</td></tr>
+    <tr><td>Name</td></><td>Year</td><td></td></tr>
     @foreach (var fridgeModel in Model)
     {
         <tr>
             <td>@fridgeModel.Name</td>
             <td>@fridgeModel?.Year</td>
+            <td><a asp-action="Edit" asp-controller="FridgeModels" asp-route-id=@fridgeModel.Id.ToString()>Edit</a></td>
         </tr>
     }
 </table>
