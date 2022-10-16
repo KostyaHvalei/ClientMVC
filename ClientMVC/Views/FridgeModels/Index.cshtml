@@ -1,0 +1,16 @@
+﻿@model IEnumerable<FridgeModelDTO>
+@{
+    ViewData["Title"] = "Fridge Models";
+}
+
+
+<table class="table">
+    <tr><td>Name</td></><td>Year</td></tr>
+    @foreach (var fridgeModel in Model)
+    {
+        <tr>
+            <td>@fridgeModel.Name</td>
+            <td>@fridgeModel?.Year</td>
+        </tr>
+    }
+</table>

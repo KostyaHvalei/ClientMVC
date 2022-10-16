@@ -1,0 +1,15 @@
+﻿@model IEnumerable<ProductDTO>
+@{
+    ViewData["Title"] = "Products";
+}
+
+<table class="table">
+    <tr><td>Name</td></><td>Default Quantity</td></tr>
+    @foreach (var product in Model)
+    {
+        <tr>
+            <td>@product.Name</td>
+            <td>@product?.DefaultQuantity</td>
+        </tr>
+    }
+</table>

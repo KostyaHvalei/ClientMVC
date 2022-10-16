@@ -1,22 +1,25 @@
 ﻿using ClientMVC.Services;
+using Contracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace ClientMVC.Controllers
 {
 	public class ProductsController : Controller
 	{
-		private readonly ProductService _service;
+		private readonly IProductService _service;
 
-		public ProductsController(ProductService service)
+		public ProductsController(IProductService service)
 		{
 			_service = service;
 		}
 
 		// GET: ProductsControllerController
-		public ActionResult Index()
+		public async Task<ActionResult> Index()
 		{
-			return View();
+			var content = await _service.GetAll();
+			return View(content);
 		}
 
 		// GET: ProductsControllerController/Details/5

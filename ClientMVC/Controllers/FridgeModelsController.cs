@@ -1,22 +1,25 @@
 ﻿using ClientMVC.Services;
+using Contracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace ClientMVC.Controllers
 {
 	public class FridgeModelsController : Controller
 	{
-		private readonly FridgeModelService _service;
+		private readonly IFridgeModelService _service;
 
-		public FridgeModelsController(FridgeModelService service)
+		public FridgeModelsController(IFridgeModelService service)
 		{
 			_service = service;
 		}
 
 		// GET: FridgeModelsController
-		public ActionResult Index()
+		public async Task<ActionResult> Index()
 		{
-			return View();
+			var content = await _service.GetAll();
+			return View(content);
 		}
 
 		// GET: FridgeModelsController/Details/5
