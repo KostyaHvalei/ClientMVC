@@ -57,5 +57,13 @@ namespace ClientMVC.Services
 				return false;
 			return true;
 		}
+
+		public async Task<bool> DeleteFridge(Guid id)
+		{
+			var response = await _client.DeleteAsync(BasePath + "/" + id.ToString());
+			if (response.IsSuccessStatusCode)
+				return false;
+			return true;
+		}
 	}
 }

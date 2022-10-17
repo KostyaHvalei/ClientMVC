@@ -78,7 +78,7 @@ namespace ClientMVC.Controllers
 
 				foreach (var prod in fridge_to_create.Products)
 				{
-					if (prod.Changed)
+					if (prod.Changed && prod.Quantity > 0)
 					{
 						var added = await _service.AddProductToFridge(id, new ProductToAddInFridgeDTO
 						{
@@ -124,24 +124,21 @@ namespace ClientMVC.Controllers
 		}
 
 		// GET: FridgesController/Delete/5
-		public ActionResult Delete(int id)
+		public ActionResult Delete(Guid id)
 		{
-			return View();
+			return View(new DeleteViewModel { Id = id, Agree = false});
 		}
 
 		// POST: FridgesController/Delete/5
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public ActionResult Delete(int id, IFormCollection collection)
+		public async Task<ActionResult> Delete(Guid id, [FromForm]bool Agree)
 		{
-			try
-			{
-				return RedirectToAction(nameof(Index));
-			}
-			catch
-			{
-				return View();
-			}
+			var res = false;
+			if (Agree)
+				res = await _service.DeleteFridge(id);
+
+			return RedirectToAction("Index");
 		}
 	}
 }
