@@ -1,9 +1,11 @@
 ﻿using ClientMVC.Services;
+using ClientMVC.ViewModels;
 using Contracts;
 using Entities.DataTransferObjects;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ClientMVC.Controllers
@@ -11,10 +13,15 @@ namespace ClientMVC.Controllers
 	public class FridgesController : Controller
 	{
 		private readonly IFridgeService _service;
+		private readonly IFridgeModelService _modelService;
+		private readonly IProductService _productService;
 
-		public FridgesController(IFridgeService service)
+		public FridgesController(IFridgeService service
+			, IFridgeModelService modelService, IProductService productService)
 		{
 			_service = service;
+			_modelService = modelService;
+			_productService = productService;
 		}
 
 		// GET: FridgesController
@@ -34,24 +41,57 @@ namespace ClientMVC.Controllers
 		}
 
 		// GET: FridgesController/Create
-		public ActionResult Create()
+		public async Task<ActionResult> Create()
 		{
-			return View();
+			var ivm = new CreateFridgeViewModel();
+			var models = await _modelService.GetAll();
+			var products_f = await _productService.GetAll();
+			var products = new List<ProductToAddInFridgeWNDTO>();
+			foreach (var item in products_f)
+				products.Add(new ProductToAddInFridgeWNDTO
+				{
+					ProductId = item.Id,
+					Name = item.Name,
+					Quantity = 0,
+					Changed = false
+				});
+			ivm.Products = products;
+			ivm.FridgeModel = models;
+
+			return View(ivm);
 		}
 
 		// POST: FridgesController/Create
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public ActionResult Create(IFormCollection collection)
+		public async Task<ActionResult> Create([FromForm] FridgeToCreateWithProductsDTO fridge_to_create)
 		{
-			try
+			if (ModelState.IsValid)
 			{
-				return RedirectToAction(nameof(Index));
+				var frid_to_put = fridge_to_create.Fridge;
+				var (created, id) = await _service.CreateFridge(frid_to_put);
+				if (!created)
+				{
+					ModelState.AddModelError("Error", "Something went wrong");
+					return RedirectToAction("Create");
+				}
+
+				foreach (var prod in fridge_to_create.Products)
+				{
+					if (prod.Changed)
+					{
+						var added = await _service.AddProductToFridge(id, new ProductToAddInFridgeDTO
+						{
+							ProductId = prod.ProductId,
+							Quantity = prod.Quantity
+						});
+					}
+				}
+
+				return RedirectToAction("Index");
 			}
-			catch
-			{
-				return View();
-			}
+
+			return View(fridge_to_create);
 		}
 
 		// GET: FridgesController/Edit/5

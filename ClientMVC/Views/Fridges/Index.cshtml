@@ -3,6 +3,8 @@
     ViewData["Title"] = "Fridges";
 }
 
+<a asp-action="Create" asp-controller="Fridges" >Create new Fridge</a>
+
 <table class="table">
     <tr><td>Name</td></><td>Owner Name</td><td>Model Name</td><td></td><td></td></tr>
     @foreach (var fridge in Model)

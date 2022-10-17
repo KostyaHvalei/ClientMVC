@@ -18,8 +18,11 @@
             <input type="number" asp-for="DefaultQuantity" />
             <span asp-validation-for="DefaultQuantity"></span>
         </div>
+
         <div>
             <input type="submit" value="Create" />
         </div>
     </div>
 </form>
+
+<a asp-action="Index" asp-controller="Products">Go back</a>
