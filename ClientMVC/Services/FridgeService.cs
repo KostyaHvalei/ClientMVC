@@ -65,5 +65,13 @@ namespace ClientMVC.Services
 				return false;
 			return true;
 		}
+
+		public async Task<string> UpdateFridgeProducts()
+		{
+			var response = await _client.GetAsync(BasePath + "/UpdateFrigdeProducts");
+			if (!response.IsSuccessStatusCode)
+				return "";
+			return await response.Content.ReadAsStringAsync();
+		}
 	}
 }

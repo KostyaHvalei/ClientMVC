@@ -140,5 +140,14 @@ namespace ClientMVC.Controllers
 
 			return RedirectToAction("Index");
 		}
+
+		[HttpGet]
+		public async Task<ActionResult> UpdateProducts()
+		{
+			var res = await _service.UpdateFridgeProducts();
+			if (string.IsNullOrEmpty(res))
+				res = "Error occuped";
+			return View("UpdateProducts", res);
+		}
 	}
 }
