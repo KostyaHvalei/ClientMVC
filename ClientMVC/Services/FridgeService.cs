@@ -4,6 +4,7 @@ using Entities.DataTransferObjects;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
 
 namespace ClientMVC.Services
@@ -29,6 +30,14 @@ namespace ClientMVC.Services
 		{
 			var response = await _client.GetAsync(BasePath + "/" + id.ToString());
 			return await response.ReadContentAsync<FridgeProductsDTO>();
+		}
+
+		public async Task<bool> EditFridge(Guid id, FridgeToUpdateDTO fridge)
+		{
+			var response = await _client.PutAsJsonAsync(BasePath + "/" + id.ToString(), fridge);
+			if (!response.IsSuccessStatusCode)
+				return false;
+			return true;
 		}
 	}
 }

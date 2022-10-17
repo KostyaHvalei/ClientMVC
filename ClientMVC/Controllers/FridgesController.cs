@@ -1,5 +1,6 @@
 ﻿using ClientMVC.Services;
 using Contracts;
+using Entities.DataTransferObjects;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -54,24 +55,32 @@ namespace ClientMVC.Controllers
 		}
 
 		// GET: FridgesController/Edit/5
-		public ActionResult Edit(int id)
+		public async Task<ActionResult> Edit(Guid id)
 		{
-			return View();
+			var fridge = await _service.GetFridge(id);
+			if (fridge == null)
+				return RedirectToAction("Index");
+			var fridgeToUpdate = new FridgeDTO { Id = fridge.FridgeId, Name = fridge.FridgeName, OwnerName = fridge.OwnerName };
+			return View(fridgeToUpdate);
 		}
 
 		// POST: FridgesController/Edit/5
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public ActionResult Edit(int id, IFormCollection collection)
+		public async Task<ActionResult> Edit(Guid id, [FromForm] FridgeToUpdateDTO fridge)
 		{
-			try
+			if (ModelState.IsValid)
 			{
-				return RedirectToAction(nameof(Index));
+				bool success = await _service.EditFridge(id, fridge);
+				if (success)
+					return RedirectToAction("Index");
+				else
+					ModelState.AddModelError("Model", "Error in model");
 			}
-			catch
-			{
-				return View();
-			}
+
+			var fridgeToUpdate = new FridgeDTO { Id = id, Name = fridge.Name, OwnerName = fridge.OwnerName };
+
+			return View(fridgeToUpdate);
 		}
 
 		// GET: FridgesController/Delete/5

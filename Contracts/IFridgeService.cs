@@ -11,5 +11,6 @@ namespace Contracts
 	{
 		public Task<IEnumerable<FridgeDTO>> GetAll();
 		Task<FridgeProductsDTO> GetFridge(Guid id);
+		Task<bool> EditFridge(Guid id, FridgeToUpdateDTO fridge);
 	}
 }
