@@ -149,5 +149,44 @@ namespace ClientMVC.Controllers
 				res = "Error occuped";
 			return View("UpdateProducts", res);
 		}
+
+		[HttpGet]
+		public async Task<ActionResult> AddProductInFridge(Guid fridgeId)
+		{
+			ProductToAddInFridgeViewModel vm = new ProductToAddInFridgeViewModel
+			{
+				FridgeId = fridgeId,
+				Products = await _productService.GetAll()
+			};
+
+			return View(vm);
+		}
+
+		[HttpPost]
+		public async Task<ActionResult> AddProductInFridge(Guid fridgeId, [FromForm] ProductToAddInFridgeDTO productToAdd)
+		{
+			if(productToAdd == null || !ModelState.IsValid)
+			{
+				return View(new ProductToAddInFridgeViewModel
+				{
+					FridgeId = fridgeId,
+					Products = await _productService.GetAll()
+				});
+			}
+
+			var res = await _service.AddProductToFridge(fridgeId, productToAdd);
+			if (res)
+				return RedirectToAction("Index");
+			else
+			{
+				ModelState.AddModelError("Add product", "Something went wrong");
+				return View(new ProductToAddInFridgeViewModel
+				{
+					FridgeId = fridgeId,
+					Products = await _productService.GetAll()
+				});
+			}
+
+		}
 	}
 }

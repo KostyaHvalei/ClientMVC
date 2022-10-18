@@ -54,16 +54,16 @@ namespace ClientMVC.Services
 		{
 			var response = await _client.PostAsJsonAsync(BasePath + "/" + id.ToString(), product);
 			if (response.IsSuccessStatusCode)
-				return false;
-			return true;
+				return true;
+			return false;
 		}
 
 		public async Task<bool> DeleteFridge(Guid id)
 		{
 			var response = await _client.DeleteAsync(BasePath + "/" + id.ToString());
 			if (response.IsSuccessStatusCode)
-				return false;
-			return true;
+				return true;
+			return false;
 		}
 
 		public async Task<string> UpdateFridgeProducts()
