@@ -73,5 +73,14 @@ namespace ClientMVC.Services
 				return "";
 			return await response.Content.ReadAsStringAsync();
 		}
+
+		public async Task<string> RemoveProductFromFridge(Guid fridgeId, Guid productId)
+		{
+			var response = await _client.DeleteAsync(BasePath + $"/{fridgeId}/" + productId.ToString());
+			if (!response.IsSuccessStatusCode)
+				return await response.Content.ReadAsStringAsync();
+			else
+				return "";
+		}
 	}
 }

@@ -28,10 +28,13 @@
         </dd>
     </dl>
 
+    <h3><a asp-action="AddProductInFridge" asp-controller="Fridges" asp-route-fridgeId=@Model.FridgeId.ToString()>Add Product</a></h3>
+
+
     @if(Model.Products.Count() > 0){
         <h4>Products in this fridge</h4>
         <table class="table">
-            <tr><td>Name</td><td>Quantity</td></tr>
+            <tr><td>Name</td><td>Quantity</td><td></td></tr>
             @foreach (var prod in Model.Products)
             {
                 if(prod.Quantity > 0)
@@ -39,6 +42,9 @@
                     <tr>
                         <td>@prod.ProductName</td>
                         <td>@prod.Quantity</td>
+                        <td>
+                            <a asp-action="RemoveProductFromFridge" asp-controller="Fridges" asp-route-fridgeId=@Model.FridgeId asp-route-productId=@prod.ProductId>Remove</a>
+                        </td>
                     </tr>
                 }
                 

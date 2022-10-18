@@ -186,7 +186,15 @@ namespace ClientMVC.Controllers
 					Products = await _productService.GetAll()
 				});
 			}
+		}
 
+		[HttpGet]
+		public async Task<IActionResult> RemoveProductFromFridge(Guid fridgeId, Guid productId)
+		{
+			var resp = await _service.RemoveProductFromFridge(fridgeId, productId);
+			if (string.IsNullOrEmpty(resp))
+				return RedirectToAction("Details", new { id = fridgeId });
+			return View(resp);
 		}
 	}
 }

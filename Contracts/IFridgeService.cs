@@ -16,5 +16,6 @@ namespace Contracts
 		Task<bool> AddProductToFridge(Guid id, ProductToAddInFridgeDTO product);
 		Task<bool> DeleteFridge(Guid id);
 		Task<string> UpdateFridgeProducts();
+		Task<string> RemoveProductFromFridge(Guid fridgeId, Guid productId);
 	}
 }
