@@ -36,9 +36,7 @@ namespace ClientMVC.Services
 		public async Task<bool> EditFridge(Guid id, FridgeToUpdateDTO fridge)
 		{
 			var response = await _client.PutAsJsonAsync(BasePath + "/" + id.ToString(), fridge);
-			if (!response.IsSuccessStatusCode)
-				return false;
-			return true;
+			return response.IsSuccessStatusCode;
 		}
 
 		public async Task<(bool, Guid)> CreateFridge(FridgeToCreationDTO fridge)
@@ -53,17 +51,13 @@ namespace ClientMVC.Services
 		public async Task<bool> AddProductToFridge(Guid id, ProductToAddInFridgeDTO product)
 		{
 			var response = await _client.PostAsJsonAsync(BasePath + "/" + id.ToString(), product);
-			if (response.IsSuccessStatusCode)
-				return true;
-			return false;
+			return response.IsSuccessStatusCode;
 		}
 
 		public async Task<bool> DeleteFridge(Guid id)
 		{
 			var response = await _client.DeleteAsync(BasePath + "/" + id.ToString());
-			if (response.IsSuccessStatusCode)
-				return true;
-			return false;
+			return response.IsSuccessStatusCode;
 		}
 
 		public async Task<string> UpdateFridgeProducts()

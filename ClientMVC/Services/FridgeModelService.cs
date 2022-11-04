@@ -30,17 +30,13 @@ namespace ClientMVC.Services
 		public async Task<bool> CreateFridgeModel(FridgeModelToCreationDTO fridgeModel)
 		{
 			var response = await _client.PostAsJsonAsync(BasePath, fridgeModel);
-			if (!response.IsSuccessStatusCode)
-				return false;
-			return true;
+			return response.IsSuccessStatusCode;
 		}
 
 		public async Task<bool> EditFridgeModel(Guid id, FridgeModelToUpdateDTO fridgeModel)
 		{
 			var response = await _client.PutAsJsonAsync(BasePath + "/" + id.ToString(), fridgeModel);
-			if (!response.IsSuccessStatusCode)
-				return false;
-			return true;
+			return response.IsSuccessStatusCode;
 		}
 
 		public async Task<FridgeModelDTO> GetFridge(Guid id)

@@ -29,17 +29,13 @@ namespace ClientMVC.Services
 		public async Task<bool> CreateProduct(ProductToCreationDTO product)
 		{
 			var response = await _client.PostAsJsonAsync(BasePath, product);
-			if (!response.IsSuccessStatusCode)
-				return false;
-			return true;
+			return response.IsSuccessStatusCode;
 		}
 
 		public async Task<bool> EditProduct(Guid id, ProductToUpdateDTO fridgeModel)
 		{
 			var response = await _client.PutAsJsonAsync(BasePath + "/" + id.ToString(), fridgeModel);
-			if (!response.IsSuccessStatusCode)
-				return false;
-			return true;
+			return response.IsSuccessStatusCode;
 		}
 		public async Task<ProductDTO> GetProduct(Guid id)
 		{
