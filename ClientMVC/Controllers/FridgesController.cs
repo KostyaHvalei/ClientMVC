@@ -165,7 +165,7 @@ namespace ClientMVC.Controllers
 		[HttpPost]
 		public async Task<ActionResult> AddProductInFridge(Guid fridgeId, [FromForm] ProductToAddInFridgeDTO productToAdd)
 		{
-			if(productToAdd == null || !ModelState.IsValid)
+			if(!ModelState.IsValid)
 			{
 				return View(new ProductToAddInFridgeViewModel
 				{
