@@ -176,7 +176,7 @@ namespace ClientMVC.Controllers
 
 			var res = await _service.AddProductToFridge(fridgeId, productToAdd);
 			if (res)
-				return RedirectToAction("Index");
+				return RedirectToRoute("default", new {controller = "Fridges", action = "details", id = fridgeId});
 			else
 			{
 				ModelState.AddModelError("Add product", "Something went wrong");
