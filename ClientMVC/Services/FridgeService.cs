@@ -54,6 +54,13 @@ namespace ClientMVC.Services
 			return response.IsSuccessStatusCode;
 		}
 
+		public async Task<bool> UpdateProductInFridge(Guid id, ProductToUpdateInFridgeDTO product)
+		{
+			var response = await _client.PutAsJsonAsync(BasePath + "/" + id.ToString() + "/" + product.ProductId,
+				new { quantity = product.Quantity });
+			return response.IsSuccessStatusCode;
+		}
+
 		public async Task<bool> DeleteFridge(Guid id)
 		{
 			var response = await _client.DeleteAsync(BasePath + "/" + id.ToString());
