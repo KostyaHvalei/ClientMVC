@@ -174,8 +174,8 @@ namespace ClientMVC.Controllers
 				});
 			}
 
-			var res = await _service.AddProductToFridge(fridgeId, productToAdd);
-			if (res)
+			var isSuccess = await _service.AddProductToFridge(fridgeId, productToAdd);
+			if (isSuccess)
 				return RedirectToRoute("default", new {controller = "Fridges", action = "details", id = fridgeId});
 			else
 			{
