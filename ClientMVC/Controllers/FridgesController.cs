@@ -188,6 +188,18 @@ namespace ClientMVC.Controllers
 			}
 		}
 
+		[HttpPost]
+		public async Task<ActionResult> UpdateProductInFridge(Guid fridgeId, [FromForm] ProductToUpdateInFridgeDTO product)
+		{
+			if (ModelState.IsValid)
+			{
+				var isSuccess = await _service.UpdateProductInFridge(fridgeId, product);
+				return RedirectToAction("Details", new { id = fridgeId });
+			}
+			var fridge_with_prods = await _service.GetFridge(fridgeId);
+			return View("Details", fridge_with_prods);
+		}
+
 		[HttpGet]
 		public async Task<IActionResult> RemoveProductFromFridge(Guid fridgeId, Guid productId)
 		{
