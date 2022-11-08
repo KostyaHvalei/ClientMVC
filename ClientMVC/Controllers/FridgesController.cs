@@ -84,7 +84,7 @@ namespace ClientMVC.Controllers
 				{
 					if (prod.Changed && prod.Quantity > 0)
 					{
-						var added = await _service.AddProductToFridge(id, new ProductToAddInFridgeDTO
+						var added = await _fridgeProductsService.AddProductToFridge(id, new ProductToAddInFridgeDTO
 						{
 							ProductId = prod.ProductId,
 							Quantity = prod.Quantity
