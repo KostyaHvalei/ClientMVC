@@ -17,6 +17,8 @@ namespace ClientMVC.Extensions
 				c.BaseAddress = baseAdress);
 			services.AddHttpClient<IProductService, ProductService>(c =>
 				c.BaseAddress = baseAdress);
+			services.AddHttpClient<IFridgeProductsService, FridgeProductsService>(c =>
+				c.BaseAddress = baseAdress);
 		}
 	}
 }
