@@ -15,13 +15,17 @@ namespace ClientMVC.Controllers
 		private readonly IFridgeService _service;
 		private readonly IFridgeModelService _modelService;
 		private readonly IProductService _productService;
+		private readonly IFridgeProductsService _fridgeProductsService;
 
 		public FridgesController(IFridgeService service
-			, IFridgeModelService modelService, IProductService productService)
+			, IFridgeModelService modelService
+			, IProductService productService
+			, IFridgeProductsService fridgeProductsService)
 		{
 			_service = service;
 			_modelService = modelService;
 			_productService = productService;
+			_fridgeProductsService = fridgeProductsService;
 		}
 
 		// GET: FridgesController
@@ -144,7 +148,7 @@ namespace ClientMVC.Controllers
 		[HttpGet]
 		public async Task<ActionResult> UpdateProducts()
 		{
-			var res = await _service.UpdateFridgeProducts();
+			var res = await _fridgeProductsService.UpdateFridgeProducts();
 			if (string.IsNullOrEmpty(res))
 				res = "Error occuped";
 			return View("UpdateProducts", res);
@@ -174,7 +178,7 @@ namespace ClientMVC.Controllers
 				});
 			}
 
-			var isSuccess = await _service.AddProductToFridge(fridgeId, productToAdd);
+			var isSuccess = await _fridgeProductsService.AddProductToFridge(fridgeId, productToAdd);
 			if (isSuccess)
 				return RedirectToRoute("default", new {controller = "Fridges", action = "details", id = fridgeId});
 			else
@@ -193,7 +197,7 @@ namespace ClientMVC.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				var isSuccess = await _service.UpdateProductInFridge(fridgeId, product);
+				var isSuccess = await _fridgeProductsService.UpdateProductInFridge(fridgeId, product);
 				return RedirectToAction("Details", new { id = fridgeId });
 			}
 			var fridge_with_prods = await _service.GetFridge(fridgeId);
@@ -203,7 +207,7 @@ namespace ClientMVC.Controllers
 		[HttpGet]
 		public async Task<IActionResult> RemoveProductFromFridge(Guid fridgeId, Guid productId)
 		{
-			var resp = await _service.RemoveProductFromFridge(fridgeId, productId);
+			var resp = await _fridgeProductsService.RemoveProductFromFridge(fridgeId, productId);
 			if (string.IsNullOrEmpty(resp))
 				return RedirectToAction("Details", new { id = fridgeId });
 			return View(resp);
